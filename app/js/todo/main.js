@@ -1,3 +1,5 @@
+ENTER_KEY = 13;
+
 require.config({
     baseUrl: '/js',
     paths: {
@@ -5,7 +7,8 @@ require.config({
         underscore: 'lib/underscore/underscore-min',
         backbone: 'lib/backbone/backbone-min',
         text: 'lib/requirejs-text/text',
-        common: 'lib/todomvc-common/base'
+        common: 'lib/todomvc-common/base',
+        channel: '/_ah/channel/jsapi?noext'
     },
     shim: {
         jquery: {
@@ -23,16 +26,23 @@ require.config({
 
 require([
     'todo/views/app-view',
+    'todo/collections/todos',
     'todo/routers/router',
+    'todo/worker',
+    'channel-handler',
     'jquery',
     'underscore',
     'backbone'
 ],
     function(
         TodoApp,
-        TodoRouter
+        Todos,
+        TodoRouter,
+        Worker
         ){
-        new TodoApp();
+        var todo = new Todos();
+        new TodoApp(todo);
+        new Worker(todo);
         new TodoRouter();
 	    Backbone.history.start();
     });

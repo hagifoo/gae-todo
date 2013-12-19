@@ -1,11 +1,13 @@
 define([
     'todo/views/todo-view',
     'todo/collections/todos',
+    'todo/models/todo-filter',
     'backbone'
 ],
     function(
         TodoView,
-        Todos
+        Todos,
+        TodoFilter
         ){
 	'use strict';
 
@@ -32,18 +34,17 @@ define([
 		// At initialization we bind to the relevant events on the `Todos`
 		// collection, when items are added or changed. Kick things off by
 		// loading any preexisting todos that might be saved in *localStorage*.
-		initialize: function () {
+		initialize: function (todo) {
 			this.allCheckbox = this.$('#toggle-all')[0];
 			this.$input = this.$('#new-todo');
 			this.$footer = this.$('#footer');
 			this.$main = this.$('#main');
-            this._todos = new Todos();
+            this._todos = todo;
 
 			this.listenTo(this._todos, 'add', this.addOne);
 			this.listenTo(this._todos, 'reset', this.addAll);
-			this.listenTo(this._todos, 'change:completed', this.filterOne);
-			this.listenTo(this._todos, 'filter', this.filterAll);
 			this.listenTo(this._todos, 'all', this.render);
+            this.listenTo(TodoFilter, 'change:state', this.render);
 
 			// Suppresses 'add' events with {reset: true} and prevents the app view 
 			// from being re-rendered for every model. Only renders when the 'reset'
@@ -68,7 +69,7 @@ define([
 
 				this.$('#filters li a')
 					.removeClass('selected')
-					.filter('[href="#/' + (app.TodoFilter || '') + '"]')
+					.filter('[href="#/' + (TodoFilter.get('state') || '') + '"]')
 					.addClass('selected');
 			} else {
 				this.$main.hide();
@@ -91,14 +92,6 @@ define([
 			this._todos.each(this.addOne, this);
 		},
 
-		filterOne: function (todo) {
-			todo.trigger('visible');
-		},
-
-		filterAll: function () {
-			this._todos.each(this.filterOne, this);
-		},
-
 		// Generate the attributes for a new Todo item.
 		newAttributes: function () {
 			return {
@@ -115,7 +108,7 @@ define([
 				return;
 			}
 
-			this._todos.create(this.newAttributes());
+			this._todos.create(this.newAttributes(), {wait: true});
 			this.$input.val('');
 		},
 

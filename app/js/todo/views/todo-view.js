@@ -1,7 +1,9 @@
 define([
+    'todo/models/todo-filter',
     'backbone'
 ],
     function(
+        TodoFilter
     ){
 	'use strict';
 
@@ -31,7 +33,8 @@ define([
 		initialize: function () {
 			this.listenTo(this.model, 'change', this.render);
 			this.listenTo(this.model, 'destroy', this.remove);
-			this.listenTo(this.model, 'visible', this.toggleVisible);
+            this.listenTo(this.model, 'highlight', this.highlight);
+            this.listenTo(TodoFilter, 'change:state', this.toggleVisible);
 		},
 
 		// Re-render the titles of the todo item.
@@ -49,11 +52,16 @@ define([
 
 		isHidden: function () {
 			var isCompleted = this.model.get('completed');
-			return (// hidden cases only
-				(!isCompleted && app.TodoFilter === 'completed') ||
-				(isCompleted && app.TodoFilter === 'active')
-			);
+			return TodoFilter.isHidden(isCompleted);
 		},
+
+        highlight: function() {
+            var $el = this.$el;
+            $el.addClass('highlight');
+            setTimeout(function() {
+                $el.removeClass('highlight');
+            }, 500);
+        },
 
 		// Toggle the `"completed"` state of the model.
 		toggleCompleted: function () {

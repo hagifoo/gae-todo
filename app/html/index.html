@@ -5,6 +5,14 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<title>Backbone.js • TodoMVC</title>
 		<link rel="stylesheet" href="../js/lib/todomvc-common/base.css">
+        <style>
+            #todo-list li.highlight {
+                background-color: orange;
+            }
+            #todo-list li {
+                transition: background-color, 1s;
+            }
+        </style>
         <script data-main="/js/todo/main" src="/js/lib/requirejs/require.js"></script>
 	</head>
 	<body>
@@ -50,16 +58,5 @@
 			<button id="clear-completed">Clear completed (<%= completed %>)</button>
 			<% } %>
 		</script>
-<!--		<script src="../js/lib/todomvc-common/base.js"></script>
-		<script src="../js/lib/jquery/jquery.js"></script>
-		<script src="../js/lib/underscore/underscore.js"></script>
-		<script src="../js/lib/backbone/backbone.js"></script>
-		&lt;!&ndash;<script src="../js/lib/backbone.localStorage/backbone.localStorage.js"></script>&ndash;&gt;
-		<script src="../js/todo/models/todo.js"></script>
-		<script src="../js/todo/collections/todos.js"></script>
-		<script src="../js/todo/views/todo-view.js"></script>
-		<script src="../js/todo/views/app-view.js"></script>
-		<script src="../js/todo/routers/router.js"></script>
-		<script src="../js/todo/app.js"></script>-->
 	</body>
 </html>

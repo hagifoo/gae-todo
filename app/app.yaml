@@ -31,3 +31,6 @@ libraries:
 
 - name: django
   version: 1.2
+
+inbound_services:
+- channel_presence

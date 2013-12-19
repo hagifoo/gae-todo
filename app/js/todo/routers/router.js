@@ -1,7 +1,8 @@
 define([
+    'todo/models/todo-filter',
     'backbone'
 ],
-function () {
+function (TodoFilter) {
 	'use strict';
 
 	// Todo Router
@@ -17,11 +18,7 @@ function () {
 
 		setFilter: function (param) {
 			// Set the current filter to be used
-			var TodoFilter = param || '';
-
-			// Trigger a collection filter event, causing hiding/unhiding
-			// of Todo view items
-			this._todos.trigger('filter');
+			TodoFilter.set({state: param || ''});
 		}
 	});
 
