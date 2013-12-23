@@ -7,7 +7,7 @@ from django.conf import settings
 import webapp2
 
 # add local modules
-sys.path.insert(0, join(dirname(__file__), 'python'))
+sys.path.insert(0, join(dirname(__file__)))
 
 logging.getLogger().setLevel(logging.DEBUG)
 

@@ -23,7 +23,7 @@ handlers:
   upload: image/favicon.ico
 
 - url: .*
-  script: main.app
+  script: python.main.app
 
 libraries:
 - name: PIL
